@@ -1,0 +1,43 @@
+!SESSION 2016-10-31 18:32:47.685 -----------------------------------------------
+eclipse.buildId=4.5.2.M20160212-1500
+java.version=1.8.0_91
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=zh_CN
+Framework arguments:  -product org.eclipse.epp.package.jee.product -keyring /Users/ludai/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.jee.product -keyring /Users/ludai/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.core.net 1 0 2016-10-31 18:34:15.093
+!MESSAGE System property http.nonProxyHosts has been set to local„ÄÅ169.254/16|*.local„ÄÅ169.254/16 by an external source. This value will be overwritten using the values from the preferences
+!SESSION 2016-10-31 18:40:42.348 -----------------------------------------------
+eclipse.buildId=4.5.2.M20160212-1500
+java.version=1.8.0_91
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=zh_CN
+Framework arguments:  -product org.eclipse.epp.package.jee.product -keyring /Users/ludai/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.jee.product -keyring /Users/ludai/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.core.resources 2 10035 2016-10-31 18:40:48.145
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY org.eclipse.core.net 1 0 2016-10-31 18:40:52.165
+!MESSAGE System property http.nonProxyHosts has been set to local„ÄÅ169.254/16|*.local„ÄÅ169.254/16 by an external source. This value will be overwritten using the values from the preferences
+!SESSION 2016-11-01 11:21:39.374 -----------------------------------------------
+eclipse.buildId=4.5.2.M20160212-1500
+java.version=1.8.0_91
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=zh_CN
+Framework arguments:  -product org.eclipse.epp.package.jee.product -keyring /Users/ludai/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.jee.product -keyring /Users/ludai/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.core.net 1 0 2016-11-01 11:21:47.658
+!MESSAGE System property http.nonProxyHosts has been set to local„ÄÅ169.254/16|*.local„ÄÅ169.254/16 by an external source. This value will be overwritten using the values from the preferences
+!SESSION 2016-11-01 11:53:07.900 -----------------------------------------------
+eclipse.buildId=4.5.2.M20160212-1500
+java.version=1.8.0_91
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=zh_CN
+Framework arguments:  -product org.eclipse.epp.package.jee.product -keyring /Users/ludai/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.jee.product -keyring /Users/ludai/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.core.net 1 0 2016-11-01 11:53:17.763
+!MESSAGE System property http.nonProxyHosts has been set to local„ÄÅ169.254/16|*.local„ÄÅ169.254/16 by an external source. This value will be overwritten using the values from the preferences
