@@ -47,6 +47,15 @@ public class Schedule implements Comparable<Schedule> {
 		return depth;
 	}
 	
+	public void getJobs(){
+		System.out.print(jobID+" ");
+		if(previous != null) previous.getJobs();
+		else  System.out.print(" no previous \n");
+
+	}
+	public int getJob(){
+		return jobID;
+	}
 	public int getTotalTime(){
 		int time = jobLength;
 		if(previous != null) time += previous.getTotalTime();

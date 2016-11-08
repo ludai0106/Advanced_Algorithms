@@ -1,6 +1,4 @@
 import java.util.Scanner;
-
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -49,6 +47,7 @@ public class ComputeTardiness {
     	File folder = new File("/Users/ludai/Desktop/Github/Advanced_Algorithms/Program/Program1/src/instances");
     	File[] instances = folder.listFiles();
         System.out.println(instances.length);
+        
 //    	    for (int i = 0; i < instances.length; i++) {
 //    	      if (instances[i].isFile()) {
 //    	        System.out.println( instances[i].getName());
@@ -58,17 +57,24 @@ public class ComputeTardiness {
 //    	    }
 
     	String directory = "/Users/ludai/Desktop/Github/Advanced_Algorithms/Program/Program1/src/instances/";
-    	String filename = directory +instances[3].getName();
+		//String file = "random_RDD=0.2_TF=0.2_#5.dat";
+    	String filename = directory +instances[5].getName();
+		//String filename = directory + file;
     	System.out.println(filename);
 		ProblemInstance instance = readInstance(filename);
-		
+//		
 		Greedy greedy = new Greedy(instance);
 		Schedule greedySchedule = greedy.getSchedule();
-		System.out.println(greedySchedule.getTardiness());
+		System.out.println("Greedy_Tardiness: "+greedySchedule.getTardiness());
+//		
+//		BestFirst bestFirst = new BestFirst(instance);
+//		Schedule bestFirstSchedule = bestFirst.getSchedule();
+//		System.out.println(bestFirstSchedule.getTardiness());
+//		
+		Exact exact =  new Exact(instance);
+    	Schedule exactSchedule = exact.getSchedule();
+		System.out.println("Exact_Tardiness : "+exactSchedule.getTardiness());
+		//exactSchedule.getJobs();
 		
-		BestFirst bestFirst = new BestFirst(instance);
-		Schedule bestFirstSchedule = bestFirst.getSchedule();
-		System.out.println(bestFirstSchedule.getTardiness());
-
 	}
 }
