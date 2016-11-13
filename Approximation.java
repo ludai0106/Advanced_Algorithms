@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 
 public class Approximation {
 	private int numJobs;
@@ -44,11 +46,29 @@ public class Approximation {
 			double k=Tmax*2*epsilon/(numJobs*(numJobs+1));
 			System.out.println(k);
 			updateJobs(k);
-			/*Schedule s_new =getSchedule(new Schedule(null, jobID, jobLength, jobDueTime));
-			s_new.getJobs();
-			return s_new;*/
+			Schedule s1=new Schedule(null,1,10.3,20.4);
+			Schedule s2=new Schedule(s1,0,23.3,16.3);
+			Schedule s3=new Schedule(s2,2,32.2,30.2);
+			Schedule s4=new Schedule(s3,3,22.5,42.4);
+			Schedule s5=new Schedule(s4,4,38.3,55.4);
+			ArrayList jobOrder= new ArrayList();
+			s5.getJobs(jobOrder);
+			System.out.println(jobOrder);
+			Schedule new_Schedule=new Schedule();
+			for (int i=0;i<jobOrder.size();i++){
+				if (i==0){
+					int ID= (int)jobOrder.get(i);
+					new_Schedule=new Schedule(null,ID,jobs[ID][0],jobs[ID][1]);
+					
+				}
+				else{
+					int ID= (int)jobOrder.get(i);
+					new_Schedule=new Schedule(new_Schedule,ID,jobs[ID][0],jobs[ID][1]);
+				}
+			}
 			/* Implement exact algorithm*/
-			return s;
+			return new_Schedule;
+			//return s5;
 		}
 			
 		
