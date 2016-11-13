@@ -55,38 +55,45 @@ public class ComputeTardiness {
 		}
 
 		else {
+			String directory = "/Users/ludai/Desktop/Github/Advanced_Algorithms/Program/Program1/src/instances/";
 
-			File folder = new File("/Users/ludai/Desktop/Github/Advanced_Algorithms/Program/Program1/src/instances");
+			File folder = new File(directory);
 			File[] instances = folder.listFiles();
 			System.out.println(instances.length);
 
-			//    	    for (int i = 0; i < instances.length; i++) {
-			//    	      if (instances[i].isFile()) {
-			//    	        System.out.println( instances[i].getName());
-			//    	      } else if (instances[i].isDirectory()) {
-			//    	        System.out.println( instances[i].getName());
-			//    	      }
-			//    	    }
+			for (int i = 0; i < instances.length; i++) {
+			    if (instances[i].isFile()) {
+					String filename = directory + instances[i].getName();
+					//System.out.println( instances[i].getName());
 
-			String directory = "/Users/ludai/Desktop/Github/Advanced_Algorithms/Program/Program1/src/instances/";
-			//String file = "random_RDD=0.2_TF=0.2_#5.dat";
-			String filename = directory + instances[20].getName();
-			//String filename = directory + file;
-			System.out.println(filename);
-			ProblemInstance instance = readInstance(filename);
+					ProblemInstance instance = readInstance(filename);
+
+					System.out.println(filename);
+
+					Greedy greedy = new Greedy(instance);
+					Schedule greedySchedule = greedy.getSchedule();
+					System.out.println("Greedy_Tardiness: " + greedySchedule.getTardiness());
+
+
+					Exact exact = new Exact(instance);
+					Schedule exactSchedule = exact.getSchedule();
+					System.out.println("Exact_Tardiness : " + exactSchedule.getTardiness());
+
+
+
+			  }
+			  else if (instances[i].isDirectory()) {System.out.println( instances[i].getName());}
+			}
+
+
+
 			//
-//			Greedy greedy = new Greedy(instance);
-//			Schedule greedySchedule = greedy.getSchedule();
-//			System.out.println("Greedy_Tardiness: " + greedySchedule.getTardiness());
+
 			//
 			//		BestFirst bestFirst = new BestFirst(instance);
 			//		Schedule bestFirstSchedule = bestFirst.getSchedule();
 			//		System.out.println(bestFirstSchedule.getTardiness());
 
-			Exact exact = new Exact(instance);
-			Schedule exactSchedule = exact.getSchedule();
-			System.out.println("Exact_Tardiness : " + exactSchedule.getTardiness());
-			//exactSchedule.getJobs();
 
 		}
 		

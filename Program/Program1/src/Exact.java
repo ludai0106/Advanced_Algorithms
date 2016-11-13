@@ -86,8 +86,6 @@ public class Exact {
 	
 	public Schedule getSchedule(){	
 
-
-		
 		//sort jobs in non-decreasing order by due time
 		Arrays.sort(jobs, new Comparator<double[]>() {
 		    public int compare(double[] job1, double[] job2) {
@@ -105,7 +103,7 @@ public class Exact {
         ArrayList<Integer> all_jobs = new ArrayList<>();
         for (int i = 0; i < numJobs; i++) all_jobs.add(i);
         Joblist job_list = new Joblist(0,all_jobs,numJobs,numJobs);
-        job_list.showJobs();
+        //job_list.showJobs();
         //all_jobs.remove(10);
         //System.out.println(all_jobs.get(10));
 
@@ -115,21 +113,17 @@ public class Exact {
         // Run time & memory analysis
         long endTime   = System.currentTimeMillis();
         long totalTime = endTime - startTime;
-        System.out.println(totalTime);
-
 
         Performance performance = new Performance();
 
         Runtime runtime = Runtime.getRuntime();
 
-        System.out.println("Run time " + runtime);
-
         // Run the garbage collector
         runtime.gc();
 
         long memory = runtime.totalMemory() - runtime.freeMemory();
-        System.out.println("Used memory is bytes: " + memory);
-        System.out.println("Used memory is megabytes: " + performance.bytesToMegabytes(memory));
+
+        System.out.println("Run time: " + totalTime + "Used memory(MB): " + performance.bytesToMegabytes(memory));
 
 
 		return s;
@@ -167,7 +161,6 @@ public class Exact {
             if (opt==null) opt = back;
             if (back.compareTo(opt)<0) opt = back;
         }
-
 
         putCache(start_time,job_list,opt);
 
