@@ -6,12 +6,12 @@ public class Schedule implements Comparable<Schedule> {
 	// between schedules, this implementation stores this overlap only once
 	private Schedule previous;
 	private int jobID;
-	private int jobLength;
+	private double jobLength;
 	
 	// tardiness can be calculated instead of memorized
 	// however, we need to calculate it a lot, so we momorize it
 	// if memory is an issue, however, try calculating it
-	private int tardiness;
+	private double tardiness;
 	
 	public Schedule(){
 		this.previous = null;
@@ -21,7 +21,7 @@ public class Schedule implements Comparable<Schedule> {
 	}
 	
 	// add an additional job to the schedule
-	public Schedule(Schedule s, int jobID, int jobLength, int jobDueTime){		
+	public Schedule(Schedule s, int jobID, double jobLength, double jobDueTime){
 		this.previous = s;
 		this.jobID = jobID;
 		this.jobLength = jobLength;
@@ -34,8 +34,9 @@ public class Schedule implements Comparable<Schedule> {
 	
 	// used by the best-first search
 	// currently, schedules are traversed in smallest total tardiness order
+
 	public int compareTo(Schedule o){
-		return getTardiness() - o.getTardiness();
+		return (int) (getTardiness() - o.getTardiness());
 		
 		// replace with the following to get a depth-first search
 		// return get_depth() - o.get_depth();
@@ -56,13 +57,14 @@ public class Schedule implements Comparable<Schedule> {
 	public int getJob(){
 		return jobID;
 	}
-	public int getTotalTime(){
-		int time = jobLength;
+
+	public double getTotalTime(){
+		double time = jobLength;
 		if(previous != null) time += previous.getTotalTime();
 		return time;
 	}
 	
-	public int getTardiness(){
+	public double getTardiness(){
 		return tardiness;
 	}
 	
