@@ -3,231 +3,174 @@ import a.d.b.b.A;
 import java.util.*;
 
 public class Exact {
-	private int numJobs;
-	private int[][] jobs;
-    private int store_size;
-    ArrayList stored_start_time;
-    ArrayList stored_job_list;
-    ArrayList stored_schedules;
+    private int numJobs;
+    private double[][] jobs;
+    private Map<Double, Map<Joblist, Schedule>> cache;
 
 	
 	public Exact(ProblemInstance instance) {
-		numJobs = instance.getNumJobs();
-		jobs = instance.getJobs();
-        store_size = 9;
-
+        numJobs = instance.getNumJobs();
+        jobs = instance.getJobs();
+        cache = new HashMap<>();
 	}
 
-	
-	public int maxPtime(int start, int end, int[] ptimes){
-		int max = -1;
-		int index = -1;
-		for(int i=start; i<=end; i++){
-			if(ptimes[i]>max){max=ptimes[i];index=i;}
-		}
-		return index;
-	}
-	
-	//order the Processing time, the  biggest P_time is marked with the largest number
-	public void sortPtime(int[] pt_order, int[][] alljobs){
-		int[] ptimes = new int[alljobs.length];
-		for(int i=0;i<alljobs.length;i++){ptimes[i]=alljobs[i][0];}
-		for(int i=0;i<ptimes.length;i++){
-			int max_index = maxPtime(0,numJobs-1,ptimes);
-			pt_order[max_index] = ptimes.length-1-i;
-			ptimes[max_index] = -1;
-		}
-	}
-	
-    public boolean check(int[] pt_order, int start, int end){
-    	for(int i=start;i<=end;i++){
-    		if(pt_order[i]!=-1)return false;
-    	}
-    	return true;
+
+
+    private boolean cacheContainskey(double startTime, Joblist jobs) {
+        return cache.containsKey(startTime) && cache.get(startTime).containsKey(jobs);
     }
 
-    public int check_size(int i, int j, int[] pt_order){
-        int sum=0;
-        for (int count=i;count<=j;count++){
-            if(pt_order[count]!=-1)sum++;
+    private Schedule cacheGetschedule(double startTime, Joblist jobs) {
+        return cache.get(startTime).get(jobs);
+    }
+
+    private void putCache(double start_time, Joblist jobs, Schedule schedule) {
+        cache.putIfAbsent(start_time,new HashMap<Joblist, Schedule>());
+        cache.get(start_time).put(jobs, schedule);
+    }
+
+    public int max_process_time(ArrayList<Integer> joblist){
+        double max = -1;
+        int index = -1;
+        for (int i = 0; i<joblist.size(); i++) {
+            if (jobs[joblist.get(i)][0] >= max){max=jobs[joblist.get(i)][0];index=joblist.get(i);}
+        }
+        return index;
+    }
+	
+
+    public double sum_process_time(ArrayList<Integer> joblist, double d_k, double start_time){
+        double sum = start_time;
+        for (int i=0; i<joblist.size();i++){
+            if (jobs[joblist.get(i)][1]<=d_k) sum = sum + jobs[joblist.get(i)][0];
         }
         return sum;
     }
 
-    public int sumPtime(ArrayList p_time, ArrayList d_time, int d_k, int start_time){
-        int sum = start_time;
-        for (int i=0; i<p_time.size();i++){
-            if((int)d_time.get(i)<=d_k){sum=sum+(int)p_time.get(i);}
+    public int front_largest(ArrayList<Integer> joblist, double d_k){
+        int last_index=joblist.get(0);
+        for(int i=0;i<joblist.size();i++){
+            if (jobs[joblist.get(i)][1] > d_k) return last_index;
+            last_index = joblist.get(i);
         }
-        return sum;
+        return last_index;
     }
 
-    public int largestFront(ArrayList d_time, int d_k){
-        for (int i=0;i<d_time.size();i++){
-            if ((int)d_time.get(i)>d_k)return i-1;
-        }
-        return (d_time.size()-1);
-    }
-
-    public int size_Backpart(ArrayList d_time, int d_k){
-        for (int i=0; i<d_time.size();i++){
-            if ((int)d_time.get(i)>d_k)return i;
+    public int back_smallest(ArrayList<Integer> joblist, double d_k){
+        for(int i=0;i<joblist.size();i++){
+            if (jobs[joblist.get(i)][1]>d_k)return joblist.get(i);
         }
         return -1;
     }
 
-    public ArrayList getSigma(int k, int i, int j, int[] pt_order, int start_time){
-        ArrayList p_time = new ArrayList();
-        ArrayList d_time = new ArrayList();
-        ArrayList real_index = new ArrayList();
-        while(i<=j){
-            if(pt_order[i]!=-1){
-                real_index.add(i);
-                p_time.add(jobs[i][0]);
-                d_time.add(jobs[i][1]);
-            }
-            i++;
-        }
+    public ArrayList<Integer> getSigma(ArrayList<Integer> joblist, int k, double start_time){
 
-        int k_index = real_index.indexOf(k);
-
-
-		ArrayList sigmaList=new ArrayList();
-
+		ArrayList<Integer> sigmaList=new ArrayList();
+        double due_k = jobs[k][1];
 
 		while(true){
+            double d_k_prime = sum_process_time(joblist,jobs[k][1],start_time);
+            if(d_k_prime > jobs[k][1]){jobs[k][1] = d_k_prime;continue;}
 
-            int d_k_prime = sumPtime(p_time,d_time, (int)d_time.get(k_index), start_time);
+            int sigma = front_largest(joblist,jobs[k][1]);
+            sigmaList.add(sigma);
 
-            if(d_k_prime > (int)d_time.get(k_index)){d_time.set(k_index,d_k_prime);continue;}
-
-            int sigma_index = largestFront(d_time,(int)d_time.get(k_index));
-
-
-            if (sigma_index!=-1) {
-                int sigma = (int)real_index.get(sigma_index)-k;
-                sigmaList.add(sigma);
-            }
-
-            int back_small = size_Backpart(d_time,(int)d_time.get(k_index));
-
-
-            if (back_small == -1)break;
-            else {d_time.set(k_index,(int)d_time.get(back_small));}
+            int smallest_back = back_smallest(joblist,jobs[k][1]);
+            if (smallest_back == -1)break;
+            else {jobs[k][1]=jobs[smallest_back][1];}
         }
 
+        jobs[k][1] = due_k;
 		return sigmaList;
 	}
 	
 	public Schedule getSchedule(){	
 
-		//System.out.println(this.numJobs);
+
 		
 		//sort jobs in non-decreasing order by due time
-		Arrays.sort(jobs, new Comparator<int[]>() {
-		    public int compare(int[] job1, int[] job2) {
-                if(job1[1]==job2[1])return  Integer.compare(job1[0],job2[0]);
-		        else return Integer.compare(job1[1], job2[1]);
+		Arrays.sort(jobs, new Comparator<double[]>() {
+		    public int compare(double[] job1, double[] job2) {
+                if(job1[1]==job2[1])return  Double.compare(job1[0],job2[0]);
+		        else return Double.compare(job1[1], job2[1]);
 		    }
 		});
 		
-		
-		//order the processing time	
-		int[] pt_order = new int[numJobs];
-		sortPtime(pt_order,jobs);
-		
+
 //		for(int i=0; i< this.jobs.length; i++)
-//			System.out.println(jobs[i][0]+" "+jobs[i][1]+" "+ pt_order[i]);
-
-        stored_schedules= new ArrayList();
-        stored_start_time = new ArrayList();
-        stored_job_list = new ArrayList();
-
-
+//			System.out.println(jobs[i][0]+" "+jobs[i][1]);
+//
         long startTime = System.currentTimeMillis();
 
-        Schedule s= getSchedule(null, pt_order, 0, numJobs-1,numJobs,0);
+        ArrayList<Integer> all_jobs = new ArrayList<>();
+        for (int i = 0; i < numJobs; i++) all_jobs.add(i);
+        Joblist job_list = new Joblist(0,all_jobs,numJobs,numJobs);
+        job_list.showJobs();
+        //all_jobs.remove(10);
+        //System.out.println(all_jobs.get(10));
 
+        Schedule s= getSchedule(null, job_list, 0);
+
+
+        // Run time & memory analysis
         long endTime   = System.currentTimeMillis();
         long totalTime = endTime - startTime;
         System.out.println(totalTime);
 
+
+        Performance performance = new Performance();
+
+        Runtime runtime = Runtime.getRuntime();
+
+        System.out.println("Run time " + runtime);
+
+        // Run the garbage collector
+        runtime.gc();
+
+        long memory = runtime.totalMemory() - runtime.freeMemory();
+        System.out.println("Used memory is bytes: " + memory);
+        System.out.println("Used memory is megabytes: " + performance.bytesToMegabytes(memory));
+
+
 		return s;
-
 	}
+
 	
-	private Schedule getSchedule(Schedule s, int[] pt_order, int i, int j, int k, int start_time){
+	private Schedule getSchedule(Schedule s, Joblist job_list, double start_time){
+        if(job_list.numJobs()==0)return s;
 
-		if(i>j)return null;
-		if((i==j)&(i==k)) {return s;}
-		if(check(pt_order,i,j)) {return s;}
+        if (job_list.numJobs()==1)
+            return new Schedule(s,job_list.getIndex(),jobs[job_list.getIndex()][0],jobs[job_list.getIndex()][1]);
 
-        ArrayList job_list= new ArrayList();
-
-        if (check_size(i,j,pt_order)>store_size) {
-
-            for (int job = i; job <= j; job++) {
-                if (pt_order[job] != -1) job_list.add(job);
-            }
-
-            if (stored_job_list.contains(job_list)) {
-                if ((int) stored_start_time.get(stored_job_list.indexOf(job_list)) == start_time) {
-                    //Schedule tmp = (Schedule) stored_schedules.get(stored_job_list.indexOf(job_list));
-                    //System.out.println(job_list);
-                    //System.out.println("Yes! Tardiness:" + tmp.getTardiness() + " Start_time:" + start_time);
-                    return (Schedule) stored_schedules.get(stored_job_list.indexOf(job_list));
-                }
-            }
+        if (cacheContainskey(start_time,job_list)){
+            //System.out.println("Lam Gao Sou");
+            return cacheGetschedule(start_time,job_list);
         }
 
-		int k_c = maxPtime(i,j,pt_order);
+        //job_list.showJobs();
 
-		int order_c = pt_order[k_c];
+        int k = max_process_time(job_list.getJoblist());
+        ArrayList<Integer> sigma_list = getSigma(job_list.getJoblist(), k, start_time);
 
+        Schedule opt=null;
 
-				
-		Map<Integer, Schedule> schedules = new HashMap();
-		
-		int min_index = -1;
-		
-        Schedule s_front = null;
-        Schedule s_k = null;
-        Schedule s_back = null;
+        for (int t=0;t<sigma_list.size();t++){
+            int sigma = sigma_list.get(t);
+            Joblist front_list = new Joblist(0,job_list.getJoblist(),sigma,k);
+            Schedule front = getSchedule(s,front_list,start_time);
 
-        int last_tardiness = Integer.MAX_VALUE;
+            Schedule s_k = new Schedule(front,k,jobs[k][0],jobs[k][1]);
 
-        ArrayList sigmaList = getSigma(k_c,i,j,pt_order,start_time);
+            Joblist back_list =  new Joblist(1,job_list.getJoblist(),sigma,k);
+            Schedule back = getSchedule(s_k,back_list,s_k.getTardiness());
 
-        pt_order[k_c] = -1;
-
-
-
-		for(int t=0; t<sigmaList.size();t++) {
-            int sigma = (int) sigmaList.get(t);
-            s_front = getSchedule(s, pt_order, i, k_c + sigma, k_c, start_time);
-            s_k = new Schedule(s_front, k_c, jobs[k_c][0], jobs[k_c][1]);
-            s_back = getSchedule(s_k, pt_order, k_c + sigma + 1, j, k_c, s_k.getTotalTime());
-            if (s_back != null) {
-                if (last_tardiness > s_back.getTardiness()) {
-                    last_tardiness = s_back.getTardiness();min_index = sigma;
-                    schedules.put(sigma, s_back);
-                }
-            }
-            else {
-                if (last_tardiness > s_k.getTardiness()) {
-                    last_tardiness = s_k.getTardiness();min_index = sigma;
-                    schedules.put(sigma, s_k);
-
-                }
-            }
+            if (opt==null) opt = back;
+            if (back.compareTo(opt)<0) opt = back;
         }
-		//System.out.println(schedules.get(min_index).getDepth());
-		pt_order[k_c]=order_c;
-        if(check_size(i,j,pt_order)>store_size) {
-            stored_job_list.add(job_list);
-            stored_start_time.add(start_time);
-            stored_schedules.add(schedules.get(min_index));
-        }
-		return schedules.get(min_index);
+
+
+        putCache(start_time,job_list,opt);
+
+        return opt;
 	}
 }

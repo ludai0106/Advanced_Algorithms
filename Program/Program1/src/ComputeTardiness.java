@@ -15,17 +15,17 @@ public class ComputeTardiness {
 		
 		try {
 			int numJobs = 0;
-			int[][] jobs = null;
+			double[][] jobs = null;
 			
 			Scanner sc = new Scanner(new BufferedReader(new FileReader(filename)));
 			if(sc.hasNextInt()){
 				numJobs = sc.nextInt();
-				jobs = new int[numJobs][2];
+				jobs = new double[numJobs][2];
 				int nextJobID = 0;
 			
 				while (sc.hasNextInt() && nextJobID < numJobs) {
-					jobs[nextJobID][0] = sc.nextInt();
-					jobs[nextJobID][1] = sc.nextInt();
+					jobs[nextJobID][0] = (double)sc.nextInt();
+					jobs[nextJobID][1] = (double)sc.nextInt();
 					nextJobID++;
 				}
 			}
@@ -43,38 +43,52 @@ public class ComputeTardiness {
 	
 	// reads a problem, and outputs the result of both greedy and best-first
     public static void main (String args[]) throws IOException {
-    	
-    	File folder = new File("/Users/ludai/Desktop/Github/Advanced_Algorithms/Program/Program1/src/instances");
-    	File[] instances = folder.listFiles();
-        System.out.println(instances.length);
-        
-//    	    for (int i = 0; i < instances.length; i++) {
-//    	      if (instances[i].isFile()) {
-//    	        System.out.println( instances[i].getName());
-//    	      } else if (instances[i].isDirectory()) {
-//    	        System.out.println( instances[i].getName());
-//    	      }
-//    	    }
 
-    	String directory = "/Users/ludai/Desktop/Github/Advanced_Algorithms/Program/Program1/src/instances/";
-		//String file = "random_RDD=0.2_TF=0.2_#5.dat";
-    	String filename = directory +instances[5].getName();
-		//String filename = directory + file;
-    	System.out.println(filename);
-		ProblemInstance instance = readInstance(filename);
-//		
-		Greedy greedy = new Greedy(instance);
-		Schedule greedySchedule = greedy.getSchedule();
-		System.out.println("Greedy_Tardiness: "+greedySchedule.getTardiness());
-//		
-//		BestFirst bestFirst = new BestFirst(instance);
-//		Schedule bestFirstSchedule = bestFirst.getSchedule();
-//		System.out.println(bestFirstSchedule.getTardiness());
-//		
-		Exact exact =  new Exact(instance);
-    	Schedule exactSchedule = exact.getSchedule();
-		System.out.println("Exact_Tardiness : "+exactSchedule.getTardiness());
-		//exactSchedule.getJobs();
+		if (args.length == 2) {
+			int epsilon = Integer.parseInt(args[0]);
+			String path = args[1];
+			ProblemInstance instance = readInstance(path);
+			Exact exact = new Exact(instance);
+			Schedule exactSchedule = exact.getSchedule();
+			String output = String.format("%d %d", exactSchedule.getTardiness(), exactSchedule.getTardiness() * 2);
+			System.out.println(output);
+		}
+
+		else {
+
+			File folder = new File("/Users/ludai/Desktop/Github/Advanced_Algorithms/Program/Program1/src/instances");
+			File[] instances = folder.listFiles();
+			System.out.println(instances.length);
+
+			//    	    for (int i = 0; i < instances.length; i++) {
+			//    	      if (instances[i].isFile()) {
+			//    	        System.out.println( instances[i].getName());
+			//    	      } else if (instances[i].isDirectory()) {
+			//    	        System.out.println( instances[i].getName());
+			//    	      }
+			//    	    }
+
+			String directory = "/Users/ludai/Desktop/Github/Advanced_Algorithms/Program/Program1/src/instances/";
+			//String file = "random_RDD=0.2_TF=0.2_#5.dat";
+			String filename = directory + instances[20].getName();
+			//String filename = directory + file;
+			System.out.println(filename);
+			ProblemInstance instance = readInstance(filename);
+			//
+//			Greedy greedy = new Greedy(instance);
+//			Schedule greedySchedule = greedy.getSchedule();
+//			System.out.println("Greedy_Tardiness: " + greedySchedule.getTardiness());
+			//
+			//		BestFirst bestFirst = new BestFirst(instance);
+			//		Schedule bestFirstSchedule = bestFirst.getSchedule();
+			//		System.out.println(bestFirstSchedule.getTardiness());
+
+			Exact exact = new Exact(instance);
+			Schedule exactSchedule = exact.getSchedule();
+			System.out.println("Exact_Tardiness : " + exactSchedule.getTardiness());
+			//exactSchedule.getJobs();
+
+		}
 		
 	}
 }
