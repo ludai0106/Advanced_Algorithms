@@ -13,6 +13,11 @@ public class Exact {
         jobs = instance.getJobs();
         cache = new HashMap<>();
 	}
+	public Exact (int numJobs,double[][] scaled_jobs){
+        this.numJobs = numJobs;
+        jobs=scaled_jobs;
+        cache = new HashMap<>();
+    }
 
 
 

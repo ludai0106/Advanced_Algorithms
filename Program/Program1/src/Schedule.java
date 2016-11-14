@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 public class Schedule implements Comparable<Schedule> {
 	// A linked-list is a reletively efficient representation of a schedule
@@ -41,17 +42,19 @@ public class Schedule implements Comparable<Schedule> {
 		// replace with the following to get a depth-first search
 		// return get_depth() - o.get_depth();
 	}
-	
+	public double getMaxT(Schedule o){
+		return getTardiness() - o.getTardiness();
+
+	}
 	public int getDepth(){
 		int depth = 1;
 		if(previous != null) depth += previous.getDepth();
 		return depth;
 	}
 	
-	public void getJobs(){
-		System.out.print(jobID+" ");
-		if(previous != null) previous.getJobs();
-		else  System.out.print(" no previous \n");
+	public ArrayList getJobs(ArrayList jobOrder){
+		if(previous != null) {previous.getJobs(jobOrder); jobOrder.add(this.jobID); return jobOrder; }
+		else { jobOrder.add(jobID);return jobOrder;}
 
 	}
 	public int getJob(){

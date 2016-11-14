@@ -3,10 +3,10 @@ import java.util.ArrayList;
 
 public class Approximation {
 	private int numJobs;
-	private int[][] jobs;
+	private double[][] jobs;
 	private double [][] scaled_jobs;
 	private double Tmax=-1;
-	public double epsilon;
+	public double epsilon=100;
 	public Approximation(ProblemInstance instance) {
 		numJobs = instance.getNumJobs();
 		jobs = instance.getJobs();
@@ -42,18 +42,12 @@ public class Approximation {
 			return s;
 		}
 		else{
-			System.out.println(Tmax);
 			double k=Tmax*2*epsilon/(numJobs*(numJobs+1));
-			System.out.println(k);
 			updateJobs(k);
-			Schedule s1=new Schedule(null,1,10.3,20.4);
-			Schedule s2=new Schedule(s1,0,23.3,16.3);
-			Schedule s3=new Schedule(s2,2,32.2,30.2);
-			Schedule s4=new Schedule(s3,3,22.5,42.4);
-			Schedule s5=new Schedule(s4,4,38.3,55.4);
+			Exact exact = new Exact(numJobs,scaled_jobs);
+			Schedule s_exact= exact.getSchedule();
 			ArrayList jobOrder= new ArrayList();
-			s5.getJobs(jobOrder);
-			System.out.println(jobOrder);
+			s_exact.getJobs(jobOrder);
 			Schedule new_Schedule=new Schedule();
 			for (int i=0;i<jobOrder.size();i++){
 				if (i==0){
@@ -97,7 +91,7 @@ public class Approximation {
 			}
 		}
 		Schedule s_new=new Schedule(s, jobID, jobLength, jobDueTime);
-		Tmax=Double.max(s_new.TVj(s),Tmax);
+		Tmax=Double.max(s_new.getMaxT(s),Tmax);
 		return getSchedule(s_new);
 	}
 }

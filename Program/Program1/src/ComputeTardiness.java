@@ -70,14 +70,20 @@ public class ComputeTardiness {
 
 					System.out.println(filename);
 
-					Greedy greedy = new Greedy(instance);
-					Schedule greedySchedule = greedy.getSchedule();
-					System.out.println("Greedy_Tardiness: " + greedySchedule.getTardiness());
+//					Greedy greedy = new Greedy(instance);
+//					Schedule greedySchedule = greedy.getSchedule();
+//					System.out.println("Greedy_Tardiness: " + greedySchedule.getTardiness());
 
 
 					Exact exact = new Exact(instance);
 					Schedule exactSchedule = exact.getSchedule();
 					System.out.println("Exact_Tardiness : " + exactSchedule.getTardiness());
+
+//					Approximation approximation = new Approximation(instance);
+//					Schedule approximationSchedule = approximation.getSchedule();
+//					System.out.println("Approximation_Tardiness : " + approximationSchedule.getTardiness());
+
+
 
 
 
