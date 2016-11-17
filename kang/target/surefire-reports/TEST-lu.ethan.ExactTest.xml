@@ -7,7 +7,7 @@
     <property name="user.country.format" value="NL"/>
     <property name="gopherProxySet" value="false"/>
     <property name="java.vm.vendor" value="Oracle Corporation"/>
-    <property name="maven.multiModuleProjectDirectory" value="/Users/ludai/Desktop/Github/Advanced_Algorithms/kang"/>
+    <property name="maven.multiModuleProjectDirectory" value="/Users/ludai/desktop/Github/Advanced_Algorithms/kang"/>
     <property name="java.vendor.url" value="http://java.oracle.com/"/>
     <property name="path.separator" value=":"/>
     <property name="guice.disable.misplaced.annotation.check" value="true"/>
@@ -64,8 +64,8 @@
     <property name="ftp.nonProxyHosts" value="local„ÄÅ169.254/16|*.local„ÄÅ169.254/16"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase classname="lu.ethan.ExactTest" name="testMax_process_time" time="0"/>
   <testcase classname="lu.ethan.ExactTest" name="testGetSchedule" time="0"/>
+  <testcase classname="lu.ethan.ExactTest" name="testMax_process_time" time="0"/>
   <testcase classname="lu.ethan.ExactTest" name="testSum_process_time" time="0"/>
   <testcase classname="lu.ethan.ExactTest" name="testFront_largest" time="0"/>
   <testcase classname="lu.ethan.ExactTest" name="testBack_smallest" time="0"/>

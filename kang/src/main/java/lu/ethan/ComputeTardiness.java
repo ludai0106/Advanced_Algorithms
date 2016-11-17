@@ -58,7 +58,7 @@ public class ComputeTardiness {
 		}
 
 		else {
-			String directory = "/Users/ludai/Desktop/Github/Advanced_Algorithms/Program/Program1/src/instances/";
+			String directory = "/Users/ludai/Desktop/Github/Advanced_Algorithms_1/Program/Program1/src/instances/";
 
 			File folder = new File(directory);
 			File[] instances = folder.listFiles();

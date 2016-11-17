@@ -121,14 +121,14 @@ public class Exact {
 
         Performance performance = new Performance();
 
-        Runtime runtime = Runtime.getRuntime();
+        //Runtime runtime = Runtime.getRuntime();
 
         // Run the garbage collector
-        runtime.gc();
+        //runtime.gc();
 
-        long memory = runtime.totalMemory() - runtime.freeMemory();
+        //long memory = runtime.totalMemory() - runtime.freeMemory();
 
-        System.out.println("Run time: " + totalTime + " Used memory(MB): " + performance.bytesToMegabytes(memory));
+        //System.out.println("Run time: " + totalTime + " Used memory(MB): " + performance.bytesToMegabytes(memory));
 
 
 		return s;
