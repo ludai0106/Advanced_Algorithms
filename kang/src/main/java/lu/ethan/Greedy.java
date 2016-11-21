@@ -13,6 +13,9 @@ public class Greedy {
 	// sorting is a little quicker, but then it is more tricky
 	// to use this as a subroutine for a search method
 	public Schedule getSchedule() {
+
+
+
 		int jobID = -1;
 		double jobLength = -1;
 		double jobDueTime = -1;
@@ -24,6 +27,7 @@ public class Greedy {
 				jobDueTime = jobs[i][1];
 			}
 		}
+
 		return getSchedule(new Schedule(null, jobID, jobLength, jobDueTime));
 	}
 	

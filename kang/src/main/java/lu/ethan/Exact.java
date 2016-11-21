@@ -5,15 +5,15 @@ import java.util.*;
 public class Exact {
     private int numJobs;
     private double[][] jobs;
-    private Map<Double, Map<Joblist, Schedule>> cache;
+    private Map<Double, Map<Joblist, ArrayList<Integer>>> cache;
 
-	
-	public Exact(ProblemInstance instance) {
+
+    public Exact(ProblemInstance instance) {
         numJobs = instance.getNumJobs();
         jobs = instance.getJobs();
         cache = new HashMap<>();
-	}
-	public Exact (int numJobs,double[][] scaled_jobs){
+    }
+    public Exact (int numJobs,double[][] scaled_jobs){
         this.numJobs = numJobs;
         jobs=scaled_jobs;
         cache = new HashMap<>();
@@ -25,12 +25,12 @@ public class Exact {
         return cache.containsKey(startTime) && cache.get(startTime).containsKey(jobs);
     }
 
-    private Schedule cacheGetschedule(double startTime, Joblist jobs) {
+    private ArrayList<Integer> cacheGetschedule(double startTime, Joblist jobs) {
         return cache.get(startTime).get(jobs);
     }
 
-    private void putCache(double start_time, Joblist jobs, Schedule schedule) {
-        cache.putIfAbsent(start_time,new HashMap<Joblist, Schedule>());
+    private void putCache(double start_time, Joblist jobs, ArrayList<Integer> schedule) {
+        cache.putIfAbsent(start_time,new HashMap<Joblist, ArrayList<Integer>>());
         cache.get(start_time).put(jobs, schedule);
     }
 
@@ -42,7 +42,7 @@ public class Exact {
         }
         return index;
     }
-	
+
 
     public double sum_process_time(ArrayList<Integer> joblist, double d_k, double start_time){
         double sum = start_time;
@@ -70,10 +70,10 @@ public class Exact {
 
     public ArrayList<Integer> getSigma(ArrayList<Integer> joblist, int k, double start_time){
 
-		ArrayList<Integer> sigmaList=new ArrayList();
+        ArrayList<Integer> sigmaList=new ArrayList();
         double due_k = jobs[k][1];
 
-		while(true){
+        while(true){
             double d_k_prime = sum_process_time(joblist,jobs[k][1],start_time);
             if(d_k_prime > jobs[k][1]){jobs[k][1] = d_k_prime;continue;}
 
@@ -86,64 +86,39 @@ public class Exact {
         }
 
         jobs[k][1] = due_k;
-		return sigmaList;
-	}
-	
-	public Schedule getSchedule(){	
+        return sigmaList;
+    }
 
-		//sort jobs in non-decreasing order by due time
-		Arrays.sort(jobs, new Comparator<double[]>() {
-		    public int compare(double[] job1, double[] job2) {
+    public Schedule getSchedule(){
+
+        //sort jobs in non-decreasing order by due time
+        Arrays.sort(jobs, new Comparator<double[]>() {
+            public int compare(double[] job1, double[] job2) {
                 if(job1[1]==job2[1])return  Double.compare(job1[0],job2[0]);
-		        else return Double.compare(job1[1], job2[1]);
-		    }
-		});
-		
-
-//		for(int i=0; i< this.jobs.length; i++)
-//			System.out.println(jobs[i][0]+" "+jobs[i][1]);
-//
-        long startTime = System.currentTimeMillis();
+                else return Double.compare(job1[1], job2[1]);
+            }
+        });
 
         ArrayList<Integer> all_jobs = new ArrayList<>();
         for (int i = 0; i < numJobs; i++) all_jobs.add(i);
         Joblist job_list = new Joblist(0,all_jobs,numJobs,numJobs);
-        //job_list.showJobs();
-        //all_jobs.remove(10);
-        //System.out.println(all_jobs.get(10));
-
-        Schedule s= getSchedule(null, job_list, 0);
 
 
-        // Run time & memory analysis
-        long endTime   = System.currentTimeMillis();
-        long totalTime = endTime - startTime;
-
-        Performance performance = new Performance();
-
-        //Runtime runtime = Runtime.getRuntime();
-
-        // Run the garbage collector
-        //runtime.gc();
-
-        //long memory = runtime.totalMemory() - runtime.freeMemory();
-
-        //System.out.println("Run time: " + totalTime + " Used memory(MB): " + performance.bytesToMegabytes(memory));
+        return getSchedule(null, job_list, 0);
+    }
 
 
-		return s;
-	}
-
-	
-	private Schedule getSchedule(Schedule s, Joblist job_list, double start_time){
+    private Schedule getSchedule(Schedule s, Joblist job_list, double start_time){
         if(job_list.numJobs()==0)return s;
-
         if (job_list.numJobs()==1)
             return new Schedule(s,job_list.getIndex(),jobs[job_list.getIndex()][0],jobs[job_list.getIndex()][1]);
-
-
         if (cacheContainskey(start_time,job_list)){
-            return cacheGetschedule(start_time,job_list);
+            ArrayList<Integer> opts = cacheGetschedule(start_time,job_list);
+            Schedule store = s;
+            for (int each : opts){
+                store = new Schedule(store,each,jobs[each][0],jobs[each][1]);
+            }
+            return store;
         }
 
 
@@ -171,10 +146,15 @@ public class Exact {
 
             if (opt==null) opt = back;
             if (back.compareTo(opt)<0) opt = back;
+            if (back.getTardiness()==0)break;
         }
 
-        putCache(start_time,job_list,opt);
+        ArrayList<Integer> optlist = new ArrayList<Integer>(job_list.getJobsize());
+        optlist.addAll(job_list.getJoblist());
+        ArrayList<Integer> opt_list = opt.getOptlist(optlist);
+
+        putCache(start_time,job_list,opt_list);
 
         return opt;
-	}
+    }
 }

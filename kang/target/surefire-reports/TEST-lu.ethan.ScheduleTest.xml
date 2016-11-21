@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="9" failures="0" name="lu.ethan.ScheduleTest" time="0.001" errors="0" skipped="0">
+<testsuite tests="9" failures="0" name="lu.ethan.ScheduleTest" time="0" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_91.jdk/Contents/Home/jre/lib"/>
@@ -7,7 +7,7 @@
     <property name="user.country.format" value="NL"/>
     <property name="gopherProxySet" value="false"/>
     <property name="java.vm.vendor" value="Oracle Corporation"/>
-    <property name="maven.multiModuleProjectDirectory" value="/Users/ludai/desktop/Github/Advanced_Algorithms/kang"/>
+    <property name="maven.multiModuleProjectDirectory" value="/Users/ludai/Desktop/Github/Advanced_Algorithms/kang"/>
     <property name="java.vendor.url" value="http://java.oracle.com/"/>
     <property name="path.separator" value=":"/>
     <property name="guice.disable.misplaced.annotation.check" value="true"/>
@@ -64,13 +64,13 @@
     <property name="ftp.nonProxyHosts" value="local„ÄÅ169.254/16|*.local„ÄÅ169.254/16"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase classname="lu.ethan.ScheduleTest" name="testGetJobs" time="0"/>
   <testcase classname="lu.ethan.ScheduleTest" name="testCompareTo" time="0"/>
-  <testcase classname="lu.ethan.ScheduleTest" name="testContainsJob" time="0"/>
-  <testcase classname="lu.ethan.ScheduleTest" name="testGetOpt" time="0"/>
   <testcase classname="lu.ethan.ScheduleTest" name="testGetMaxT" time="0"/>
   <testcase classname="lu.ethan.ScheduleTest" name="testGetDepth" time="0"/>
   <testcase classname="lu.ethan.ScheduleTest" name="testGetJob" time="0"/>
-  <testcase classname="lu.ethan.ScheduleTest" name="testGetTotalTime" time="0.001"/>
+  <testcase classname="lu.ethan.ScheduleTest" name="testGetTotalTime" time="0"/>
   <testcase classname="lu.ethan.ScheduleTest" name="testGetTardiness" time="0"/>
+  <testcase classname="lu.ethan.ScheduleTest" name="testContainsJob" time="0"/>
+  <testcase classname="lu.ethan.ScheduleTest" name="testGetOpt" time="0"/>
+  <testcase classname="lu.ethan.ScheduleTest" name="testGetJobs" time="0"/>
 </testsuite>

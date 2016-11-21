@@ -34,9 +34,7 @@ public class Schedule implements Comparable<Schedule> {
 			this.tardiness += previous.getTardiness();
 		}
 	}
-	
-	// used by the best-first search
-	// currently, schedules are traversed in smallest total tardiness order
+
 
 	public int compareTo(Schedule o){
 		return (int) (getTardiness() - o.getTardiness());
@@ -44,30 +42,26 @@ public class Schedule implements Comparable<Schedule> {
 		// replace with the following to get a depth-first search
 		// return get_depth() - o.get_depth();
 	}
-	public double getMaxT(Schedule o){
-		return getTardiness() - o.getTardiness();
 
-	}
 	public int getDepth(){
 		int depth = 1;
 		if(previous != null) depth += previous.getDepth();
 		return depth;
 	}
 	
-	public ArrayList getJobs(ArrayList jobOrder){
+	public ArrayList<Integer> getJobs(ArrayList<Integer> jobOrder){
 		if(previous != null) {previous.getJobs(jobOrder); jobOrder.add(this.jobID); return jobOrder; }
 		else { jobOrder.add(jobID);return jobOrder;}
 
 	}
-	public int getJob(){
-		return jobID;
-	}
+
 
 	public double getTotalTime(){
 		double time = jobLength;
 		if(previous != null) time += previous.getTotalTime();
 		return time;
 	}
+
 	
 	public double getTardiness(){
 		return tardiness;
@@ -77,18 +71,37 @@ public class Schedule implements Comparable<Schedule> {
 		return (jobID == job) || (previous != null && previous.containsJob(job));
 	}
 
-	public void getOpt(){
-		if (previous!=null) { previous.getOpt();}
-		System.out.print(jobID + " ");
+
+
+
+	public void ouput_list(){
+		if (previous!=null)previous.ouput_list();
+		System.out.print(jobID + "-");
 	}
 
-//	public Schedule update_front(Schedule s,ArrayList jobs){
-//		ArrayList<Integer> job_list = jobs;
-//		System.out.print(job_list);
-//		System.out.println(" jobID " + jobID);
-//		job_list.remove((Integer)jobID);
-//		//System.out.println(job_list);
-//		if (job_list.size()==1 && jobID==job_list.get(0)) return new Schedule(s,jobID,jobLength,)
-//		else previous.update_front(s,job_list);
-//	}
+
+
+	public ArrayList<Integer> getOptlist (ArrayList<Integer> jobs){
+		ArrayList<Integer> opt_list = new ArrayList<Integer>();
+		if (previous!=null){
+			if (jobs.size()<1)return opt_list;
+			jobs.remove(new Integer(jobID));
+			opt_list=previous.getOptlist(jobs);
+			opt_list.add(jobID);
+		}
+		else {if(jobs.contains(jobID))opt_list.add(jobID);}
+		return opt_list;
+	}
+
+	public double max_tardiness(){
+		if (previous!=null)return Math.max(tardiness-previous.getTardiness(),previous.max_tardiness());
+		else return tardiness;
+
+	}
+	public ArrayList<Double> all_tardiness(){
+		ArrayList<Double> list = new ArrayList<>();
+		if (previous!=null){list.addAll(previous.all_tardiness());list.add(tardiness-previous.getTardiness());return list;}
+		else {list.add(tardiness);return list;}
+	}
+
 }

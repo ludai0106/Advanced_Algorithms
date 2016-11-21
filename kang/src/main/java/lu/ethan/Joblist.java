@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 
 public class Joblist {
+    //private ArrayList<ArrayList<Integer>> jobs;
     private ArrayList<Integer> job_index;
 
 
@@ -49,7 +50,6 @@ public class Joblist {
                 .append(job_index.get(0))
                 .append(job_index.get(job_index.size()-1))
                 .append(job_index.size())
-                .append(job_index.toString())
                 .toHashCode();
     }
 

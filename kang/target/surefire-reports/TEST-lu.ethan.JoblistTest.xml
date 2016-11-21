@@ -7,7 +7,7 @@
     <property name="user.country.format" value="NL"/>
     <property name="gopherProxySet" value="false"/>
     <property name="java.vm.vendor" value="Oracle Corporation"/>
-    <property name="maven.multiModuleProjectDirectory" value="/Users/ludai/desktop/Github/Advanced_Algorithms/kang"/>
+    <property name="maven.multiModuleProjectDirectory" value="/Users/ludai/Desktop/Github/Advanced_Algorithms/kang"/>
     <property name="java.vendor.url" value="http://java.oracle.com/"/>
     <property name="path.separator" value=":"/>
     <property name="guice.disable.misplaced.annotation.check" value="true"/>
@@ -64,11 +64,11 @@
     <property name="ftp.nonProxyHosts" value="local„ÄÅ169.254/16|*.local„ÄÅ169.254/16"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
+  <testcase classname="lu.ethan.JoblistTest" name="testShowJobs" time="0"/>
+  <testcase classname="lu.ethan.JoblistTest" name="testNumJobs" time="0"/>
   <testcase classname="lu.ethan.JoblistTest" name="testGetIndex" time="0"/>
   <testcase classname="lu.ethan.JoblistTest" name="testGetJoblist" time="0"/>
   <testcase classname="lu.ethan.JoblistTest" name="testGetJobsize" time="0"/>
   <testcase classname="lu.ethan.JoblistTest" name="testHashCode" time="0"/>
   <testcase classname="lu.ethan.JoblistTest" name="testEquals" time="0"/>
-  <testcase classname="lu.ethan.JoblistTest" name="testShowJobs" time="0"/>
-  <testcase classname="lu.ethan.JoblistTest" name="testNumJobs" time="0"/>
 </testsuite>
