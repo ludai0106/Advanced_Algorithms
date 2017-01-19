@@ -1,5 +1,4 @@
-function [upper,lower,n,X,delta_t,delta_ta,accuracy]= maxcut(path,itr)
-    format long g
+function [t,t_a,X,time,accuracy]= maxcut(path,itr)
     %Read max cut instance
     fid=fopen(path);
     tline = fgets(fid);
@@ -30,7 +29,6 @@ function [upper,lower,n,X,delta_t,delta_ta,accuracy]= maxcut(path,itr)
     %Run sedumi
     [X,Y,INFO]=sedumi(A,b,c,K);
     %Cholesky factorization
-    t0=clock;
     Xn=reshape(X,[n,n]);
     V=chol(Xn);
     max_lower=0;
@@ -38,21 +36,15 @@ function [upper,lower,n,X,delta_t,delta_ta,accuracy]= maxcut(path,itr)
         %Generate a random vector
         R = normrnd(0,1,n,1);
         %Normalize the vector
-        r= R/sqrt(sum(R.^2));
+        r= R/sqrt(sum(R.^2))
         %Rounding algorithm
-        f=sign(V'*r)*sign(V'*r)';
-        f=reshape(f,[n^2,1]);
+        f=sign(V'*r)*sign(V'*r)'
+        f=reshape(f,[n^2,1])
         t_a=-c'*f;
-        if t_a>max_lower
-            max_lower=t_a;
-        end
-    end
-    t1=clock;
-    delta_ta=etime(t1,t0);
+        if 
     %Return results
-    upper=-c'*X;
-    lower=max_lower;
-    delta_t=sum(INFO.timing);
+    t=-c'*X;
+    time=sum(INFO.timing);
     if INFO.numerr==0
        accuracy=10^(-8);
     elseif INFO.numerr==1
