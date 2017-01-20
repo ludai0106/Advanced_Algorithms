@@ -1,0 +1,112 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1.2in,footskip=0.25in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{float}
+\title{\textbf{Advanced Algorithms - Weighted MAXCUT}}
+\author{Lu Dai (4506677)\\
+		Yuxuan Kang (4504410)\\}
+\date{16 Jan 2017}
+
+\begin{document}
+
+\maketitle
+
+\section{Problem Description}
+Weighted MAXCUT problem:
+Given an undirected graph $G=(V,E)$ with non-negative weights $w_{ij}$ for edge between node $v_i$ and $v_j$. The weighted MAXCUT problem is to determine the max weight cut in Graph $G$. A cut of a graph is a partitioning of the vertices $V=\{S,\overline{S}\}$, the max weight is the sum of the weights of all edges between the partition $S$ and $\overline{S}$.
+
+\section{Methodology}
+\subsection{IP model of MAXCUT}
+MAXCUT can be written in to integer programming form:
+$$x_e=
+\left \{
+  \begin{tabular}{c}
+  1 \  \ \text{if $e\in (S,\overline{S})$}\\
+  0 \   \ \text{Otherwise}\\
+  \end{tabular}\right.$$
+$$max\sum_{e\in E}w_ex_e$$
+$$s.t. \sum_{e\in F}x_e+\sum_{e\in C\setminus F}(1-x_e)\leq |C|-1\       \ \textrm{$\forall$ cycles $\subseteq$ E, $\forall F \subseteq C$ with $|F|$ odd }$$
+The constraint states that for any cycle in the graph, the cut must intersect in an even number of edges.
+\subsection{Semidefinite programming}
+In order to solve MAXCUT more efficiently, the problem can also be translated to semidefinite programming. The quadratic integer programming formulation for MAXCUT is as follows:
+$$let\  \ y_i=
+\left \{
+  \begin{tabular}{c}
+  1 \  \ \text{if $i\in S$}\\
+  -1 \   \ \text{if $i\in \overline{S}$}\\
+  \end{tabular}\right.$$
+  $$W=max \frac{1}{2}\sum_{i<j}w_{ij}(1-y_iy_j) $$
+  $$s.t.\ \ y_i \in \{-1,1\}\ \ \textrm{for $i=1,...,m$}$$
+So when $y_iy_j=1$, vertex $i$ and $j$ are in the same partition, when $y_iy_j=-1$, they are in different partitions. The above fomulation can be written in vector form, and it is also the relaxation of the MAXCUT problem:
+$$W_{RP}=max\frac{1}{2}\sum _{i<j}w_{ij}(1-v_i\cdot v_j)$$
+ $$s.t.\ \ v_i \in \mathbb{R}^n\ \ \textrm{$||v_i||=1,\ \ i=1,...,n$}$$
+ For feasible solutions, $v_i$ and $v_j$ are in one-dimensional space. Thus the above relaxation is equivalent to quadratic programming formulation of MAXCUT. If $v_i$ and $v_j$ are not limited to one-dimensional space but n-dimensional space, then the solution will become relaxed. Semidefinite programming of MAXCUT produces a solution which is larger than optimal solution, thus it provides an upper bound. 
+ 
+ In order to formulate the problem in $max$ $c\cdot x$ form, a Laplacian matrix is introduced. A Laplacian matrix of the graph is: $L=D-A$ where $D$ is the degree m    atrix of the graph and $A$ is the adjacency matrix of the graph. Based on Laplacian matrix, MAXCUT problem can be tranlated into:
+ $$max\ \ \frac{1}{4} L\cdot x$$
+ $$s.t.\ \ diag(x)=e$$
+ $$x\in S^n_+\ \ \textrm{semidefinite positive matrix constraint}$$
+ According to above SDP, MAXCUT problem polynomially sovable.
+\subsection{Randomized rounding algorithm}
+Based on SDP, Goemans and Williamson proposed an randomized rounding algorithm which can produces a feasible solution smaller than optimal solution in MAXCUT problem, thus a lower bound can be obtained.
+
+$x$ obtained in SDP is semidefinite positive matrix, so it can be decomposed as $x=v^Tv$. Columns in $v$ are the vectors $v_i$, $i=1,...,n$. By generating a random vector $r$ from gaussian distribution and normalizing it, a certain partition of the set can be obtained. Use the dot product of $v_i$ and $r$:
+$$
+\left \{
+  \begin{tabular}{c}
+  $v_i\cdot r \geq 0$\  \ \text{then $i\in S$}\\
+  $v_i\cdot r  <0$   \  \ \text{then $i\in \overline{S}$}\\
+  \end{tabular}\right.$$
+By rounding the solution matrix $x$ to either 1 (if non-negative) or -1 (if negative), the set can be partitioned. And the solution will be feasible by this rounding method. In order to get a tighter lower bound, the random vector $r$ is generated multiple times, and the maximum solution will be chosen as lower bound.
+\section{Result and discussion}
+An experiment of SDP and rounding alrogithm is carried out in Matlab. There are 16 instances in the experiment:
+
+Non-complete graphs:
+
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+\hline
+Instance size & 5   & 10  & 20  & 30  & 40  & 50  & 60  & 70  \\ \hline
+Possibility of edges        & 0.5 & 0.5 & 0.5 & 0.5 & 0.5 & 0.5 & 0.5 & 0.5 \\ \hline
+max weight of the edges     & 10  & 10  & 15  & 15  & 20  & 20  & 25  & 20  \\ \hline
+\end{tabular}
+\\\\
+Complete graphs:
+
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+\hline
+Instance size & 5   & 10  & 20  & 30  & 40  & 50  & 60  & 70  \\ \hline
+Possibility of edges        & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 \\ \hline
+max weight of the edges     & 10  & 10  & 15  & 15  & 20  & 20  & 25  & 20  \\ \hline
+\end{tabular}
+\begin{figure}[H] 
+    \includegraphics[width=1\textwidth]{Non-complete}
+	\caption{Solutions of non-complete graphs}
+	\label{fig:1} %% label for first subfigure
+\end{figure}
+Figure \ref{fig:1} shows the solutions and runtimes of SDP and rounding algorithm over non-complete graph. Both SDP and rounding algorithm are solvable in polynomial time as rounding takes much less time. However, since the result from rounding relies on the result of SDP, the runtimes between SDP and rouning are not comparable. The solutions from SDP and rounding are close, so the upper bound and the lower bound are relatively tight.
+\begin{figure}[H]
+    \includegraphics[width=1\textwidth]{Accuracy0_5}
+	\caption{Accuracy of SDP and rounding }
+	\label{fig:2} %% label for first subfigure
+\end{figure}
+Figure \ref{fig:2} shows the ratio: $\frac{lower bound}{uppder bound}$, it to some degree reflects the accuracy of SDP and rounding algorithm. For instance size of 5 and 10, the ratio equals to 1 which means both SDP and rounding algorithm provide optimal solution. The radio reflects the gap between upper bound and lower bound. The closer the ratio is to 1, the more accurate results from SDP and rounding algorithm are. In these 8 instances, the limit for the ratio is 0.96.
+
+Similar analysis can be carried out for complete graphs. The results from 8 complete graphs are shown below:
+\begin{figure}[H] 
+    \includegraphics[width=1\textwidth]{Complete}
+	\caption{Solutions of non-complete graphs}
+	\label{fig:3} %% label for first subfigure
+\end{figure}
+\begin{figure}[H] 
+    \includegraphics[width=1\textwidth]{Accuracy1}
+	\caption{Solutions of non-complete graphs}
+	\label{fig:4} %% label for first subfigure
+\end{figure}
+Compared to non-complete graph, the runtime almost does not change (over 0.2 for instance size 70), which indicates the number of the edges has little influence on the runtime. However, the accuracy does improve as the limit of the ratio for these 8 instances is 0.98.
+\end{document}
+    

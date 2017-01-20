@@ -1,4 +1,4 @@
-Directory='F:\TUDelft\IN4301 Advanced Algorithms\Programming2\Programming2\Instances0.5\';
+Directory='F:\TUDelft\IN4301 Advanced Algorithms\Programming2\Programming2\Instances1\';
 uppers=[];
 lowers=[];
 ns=[];
@@ -23,7 +23,18 @@ uppers=uppers(indices)
 lowers=lowers(indices)
 Delta_ts=Delta_ts(indices);
 Delta_tas=Delta_tas(indices);
-figure(1)
+figure
+subplot(1,2,1);
 plot(ns,uppers,ns,lowers);
-figure(2)
+xlabel('Instance size');
+ylabel('Solution');
+legend('SDP','Rounding')
+subplot(1,2,2);
 plot(ns,Delta_ts,ns,Delta_tas);
+xlabel('Instance size');
+ylabel('Time(s)');
+legend('SDP','Rounding')
+figure
+plot(ns,lowers./uppers)
+xlabel('Instance size');
+ylabel('Lower bound/Upper bound');
