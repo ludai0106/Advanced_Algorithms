@@ -1,0 +1,28 @@
+\begin{thebibliography}{3}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Koulamas(2010)]{koulamas2010single}
+Christos Koulamas.
+\newblock The single-machine total tardiness scheduling problem: review and
+  extensions.
+\newblock \emph{European Journal of Operational Research}, 202\penalty0
+  (1):\penalty0 1--7, 2010.
+
+\bibitem[Lawler(1982)]{lawler1982fully}
+EL~Lawler.
+\newblock A fully polynomial approximation scheme for the total tardiness
+  problem.
+\newblock \emph{Operations Research Letters}, 1\penalty0 (6):\penalty0
+  207--208, 1982.
+
+\bibitem[Lawler(1977)]{lawler1977pseudopolynomial}
+Eugene~L Lawler.
+\newblock A ¡°pseudopolynomial¡± algorithm for sequencing jobs to minimize
+  total tardiness.
+\newblock \emph{Annals of discrete Mathematics}, 1:\penalty0 331--342, 1977.
+
+\end{thebibliography}
